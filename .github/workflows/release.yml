@@ -1,38 +1,46 @@
-name: Build Plugin Zip
+name: Create Release
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*.*.*'
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  release:
+    name: Create Release
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Create plugin zip
-        run: |
-          PLUGIN_NAME="checkoutglut"
-          cd ..
-          mv $PLUGIN_NAME $PLUGIN_NAME-temp
-          mkdir $PLUGIN_NAME
-          cp -r $PLUGIN_NAME-temp/* $PLUGIN_NAME/
-          zip -r $PLUGIN_NAME.zip $PLUGIN_NAME -x "*.git*" "*/.github/*" "*/node_modules/*"
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
 
-      - name: Update latest release
+      - name: Create ZIP archive
+        run: |
+          VERSION="${{ steps.get_version.outputs.VERSION }}"
+          mkdir -p release
+          rsync -av --exclude='.git' \
+                    --exclude='.github' \
+                    --exclude='.gitignore' \
+                    --exclude='*.log' \
+                    --exclude='tests' \
+                    --exclude='node_modules' \
+                    --exclude='release' \
+                    . release/checkoutglut/
+          cd release
+          zip -r ../checkoutglut-${VERSION}.zip checkoutglut/
+
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: latest
-          name: Latest Build
-          files: ../checkoutglut.zip
-          prerelease: false
-          draft: false
-          overwrite_files: true
+          files: checkoutglut-${{ steps.get_version.outputs.VERSION }}.zip
+          generate_release_notes: true
+          name: ${{ steps.get_version.outputs.VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
