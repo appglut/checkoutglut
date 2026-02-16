@@ -1,0 +1,38 @@
+name: Build Plugin Zip
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create plugin zip
+        run: |
+          PLUGIN_NAME="checkoutglut"
+          cd ..
+          mv $PLUGIN_NAME $PLUGIN_NAME-temp
+          mkdir $PLUGIN_NAME
+          cp -r $PLUGIN_NAME-temp/* $PLUGIN_NAME/
+          zip -r $PLUGIN_NAME.zip $PLUGIN_NAME -x "*.git*" "*/.github/*" "*/node_modules/*"
+
+      - name: Update latest release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: Latest Build
+          files: ../checkoutglut.zip
+          prerelease: false
+          draft: false
+          overwrite_files: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
