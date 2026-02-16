@@ -1,0 +1,26 @@
+# Ignore development and system files
+.DS_Store
+Thumbs.db
+*.log
+*.swp
+*.swo
+*~
+
+# Ignore IDE files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Ignore node modules if any
+node_modules/
+package-lock.json
+
+# Ignore composer files
+vendor/
+composer.lock
+
+# Ignore build artifacts
+*.zip
+dist/
+build/
