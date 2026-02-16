@@ -6,11 +6,20 @@ Thumbs.db
 *.swo
 *~
 
-# Ignore IDE files
+# Claude Code
+.claude/
+
+# GitHub
+.github/
+
+# IDE files
 .vscode/
 .idea/
 *.sublime-project
 *.sublime-workspace
+
+# Git
+.gitignore
 
 # Ignore node modules if any
 node_modules/
