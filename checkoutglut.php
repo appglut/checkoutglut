@@ -3,7 +3,7 @@
  * Plugin Name: CheckoutGlut - Checkout Fields for WooCommerce
  * Plugin URI: https://wordpress.org/plugins/shopglut
  * Description: Powerful WooCommerce checkout field editor with support for classic and block checkout, custom fields, field reordering, validation, and more.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: AppGlut
  * Author URI: https://appglut.com/
  * License: GPL v2 or later
