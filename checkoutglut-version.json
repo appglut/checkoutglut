@@ -1,7 +1,7 @@
 {
   "name": "CheckoutGlut",
   "slug": "checkoutglut",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "download_url": "https://updates.appglut.com/plugins/checkoutglut.zip",
   "homepage": "https://github.com/appglut/checkoutglut",
   "requires": "5.8",
