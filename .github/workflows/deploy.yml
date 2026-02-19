@@ -1,0 +1,39 @@
+name: Deploy to Hosting
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
+      - name: Deploy to hosting
+        run: |
+          lftp -c "
+          set ssl:verify-certificate no;
+          open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }};
+          cd ${{ secrets.FTP_PATH }};
+          put checkoutglut.zip;
+          put checkoutglut-version.json;
+          close
+          "
+
+      - name: Deployment Summary
+        run: |
+          echo "## Deployment Complete! :rocket:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Files synced:**" >> $GITHUB_STEP_SUMMARY
+          echo "- checkoutglut.zip" >> $GITHUB_STEP_SUMMARY
+          echo "- checkoutglut-version.json" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Destination:** \`${{ secrets.FTP_PATH }}\`" >> $GITHUB_STEP_SUMMARY

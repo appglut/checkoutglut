@@ -1,35 +1,8 @@
-# Ignore development and system files
-.DS_Store
-Thumbs.db
-*.log
-*.swp
-*.swo
-*~
+# Ignore everything
+/*
 
-# Claude Code
-.claude/
-
-# GitHub
-.github/
-
-# IDE files
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
-
-# Git
-.gitignore
-
-# Ignore node modules if any
-node_modules/
-package-lock.json
-
-# Ignore composer files
-vendor/
-composer.lock
-
-# Ignore build artifacts
-*.zip
-dist/
-build/
+# But track these
+!checkoutglut.zip
+!checkoutglut-version.json
+!.github/
+!.gitignore
